@@ -13,6 +13,8 @@ class WinesController < ApplicationController
   # GET /wines/new
   def new
     @wine = Wine.new
+    @strains = Strain.all
+    @wine.assemblies.build
   end
 
   # GET /wines/1/edit
@@ -64,6 +66,6 @@ class WinesController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def wine_params
-      params.require(:wine).permit(:name, {strain_ids:[]})
+      params.require(:wine).permit(:name,{strains_attributes: [:id, :name]}, {assemblies_attributes:[:id, :strain_id, :percent, :_destroy]}, {strain_ids: []})
     end
 end
