@@ -4,14 +4,19 @@ class Wine < ApplicationRecord
     accepts_nested_attributes_for :assemblies, reject_if: :all_blank, allow_destroy: true
 
 
+    def assembly_percent
+        
+        assembly_array = []
+        assembly_string = []
 
-    def strain_and_percent
-        name_percent = []
-        assemblies.map do |ws|
-            name_percent.push [ws.strain.name, ws.percent] 
+        self.assemblies.each do |assembly|
+            assembly_array.push([assembly.strain.name , assembly.percent])
         end
-        name_percent.sort_by{ |strain| strain[0] }.map do |cepa|
-            "#{cepa[0]} (#{cepa[1]})%"
+
+        assembly_array.sort_by{ |strain| strain[0] }.map do |cepa|
+            "#{cepa[0]} (#{cepa[1]}%)"
         end.join(', ')
+        
+
     end
 end
